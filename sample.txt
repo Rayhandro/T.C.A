@@ -1,0 +1,14 @@
+gcloud compute --project=qwiklabs-gcp-01-9e46631c930b firewall-rules create managementnet-allow-icmp-ssh-rdp --direction=INGRESS --priority=1000 --network=managementnet --action=ALLOW --rules=tcp:22,tcp:3389,udp,icmp --source-ranges=0.0.0.0/0
+
+gcloud compute firewall-rules create privatenet-allow-icmp-ssh-rdp --direction=INGRESS --priority=1000 --network=privatenet --action=ALLOW --rules=icmp,tcp:22,tcp:3389 --source-ranges=0.0.0.0/0
+
+gcloud compute instances create privatenet-europe-west1-vm --zone=europe-west1-d --machine-type=e2-micro --subnet=privatesubnet-europe-west1
+
+gcloud compute instances create managementnet-europe-west1-vm --zone=europe-west1-d --machine-type=e2-micro --subnet=managementsubnet-europe-west1
+
+ ping -c 3 35.195.36.48
+
+ping -c 3 10.164.0.2
+
+gcloud compute instances create vm-appliance --zone=europe-west1-d --machine-type=e2-standard-4 --subnet=privatenet-europe-west1 --subnet=managementsubnet-europe-west1 --subnet=mynetwork
+
